@@ -1,21 +1,21 @@
 import java.util.Arrays;
 import java.util.Random;
 
-public class Aprox {
+public class TSPAprox {
     private int optimalSolution;
     private final int[][] adjMatrix;
     private final Random random;
 
-    public Aprox(int[][] adjMatrix) {
+    public TSPAprox(int[][] adjMatrix) {
         this(adjMatrix, new Random());
     }
 
     // Seed fixa (para avaliar os resultados)
-    public Aprox(int[][] adjMatrix, long seed) {
+    public TSPAprox(int[][] adjMatrix, long seed) {
         this(adjMatrix, new Random(seed));
     }
 
-    private Aprox(int[][] adjMatrix, Random random) {
+    private TSPAprox(int[][] adjMatrix, Random random) {
         this.adjMatrix = adjMatrix;
         this.random = random;
     }

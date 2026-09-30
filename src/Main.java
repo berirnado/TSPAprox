@@ -19,6 +19,20 @@ public class Main {
             fileParser.loadExample(opcaoMenu);
             int[][] matrizAdjacencia = fileParser.getAdjMatrix();
 
+            //Monte Carlo
+            System.out.println("\nExecutando o aproximativo...");
+            TSPAprox aprox = new TSPAprox(matrizAdjacencia, 42); //seed fixa pra verificar resutlados
+            int amostras = 1000;
+            int k = 3;
+
+            int rota[] = aprox.monteCarloNearestNeighbor(amostras, k);
+
+            System.out.println("Solução Aproximativa:");
+            System.out.println("Rota: " + Arrays.toString(rota));
+            System.out.println("Custo: " + aprox.custoDoCiclo(rota));
+            System.out.println("Custo ótimo esperado: " + fileParser.getOptimalSolution());
+
+            //Exato
             System.out.println("\nExecutando exato (timeout: " + (tempoLimiteMs / 1000) + "s)...");
             exato.resolver(matrizAdjacencia, tempoLimiteMs);
 
