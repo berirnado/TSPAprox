@@ -5,10 +5,16 @@ import java.util.Scanner;
 void main() {
     FileParser fileParser = new FileParser();
 
-    fileParser.loadExample(1);
+    fileParser.loadExample(4);
     int adjMatrix[][] = fileParser.getAdjMatrix();
 
-    System.out.println("adjMatrix(3, 4):" + adjMatrix[3][4]);
-    System.out.println("adjMatrix(1, 2):" + adjMatrix[1][2]);
-    System.out.println("adjMatrix(3, 4):" + adjMatrix[3][3]);
+    // Monte Carlo
+    Aprox aprox = new Aprox(adjMatrix, 42);
+    int runs = 1000;
+    int k = 3;
+
+    int[] rota = aprox.monteCarloNearestNeighbor(runs, k);
+
+    System.out.println("Rota: " + Arrays.toString(rota));
+    System.out.println("Custo: " + aprox.custoDoCiclo(rota));
 }
