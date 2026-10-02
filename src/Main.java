@@ -25,29 +25,46 @@ public class Main {
             int amostras = 1000;
             int k = 3;
 
+            ExecutionTimer timer = new ExecutionTimer();
+            timer.start();
             int rota[] = aprox.monteCarloNearestNeighbor(amostras, k);
+            long tempo = timer.stop();
+            int custo = aprox.custoDoCiclo(rota);
 
-            System.out.println("Solução Aproximativa:");
+            Resultado resultado = new Resultado(
+                fileParser.getNomeInstancia(),
+                custo,
+                fileParser.getOptimalSolution(),
+                tempo,
+                false
+            );
+            
+            resultado.mostrarResumo();
             System.out.println("Rota: " + Arrays.toString(rota));
-            System.out.println("Custo: " + aprox.custoDoCiclo(rota));
-            System.out.println("Custo ótimo esperado: " + fileParser.getOptimalSolution());
+          
 
             //Exato
             System.out.println("\nExecutando exato (timeout: " + (tempoLimiteMs / 1000) + "s)...");
+            ExecutionTimer timerExato = new ExecutionTimer();
+            timerExato.start();
             exato.resolver(matrizAdjacencia, tempoLimiteMs);
+            long tempoExato = timerExato.stop();
 
-            if (exato.estourouTempo()) {
-                System.out.println("Timeout! O tempo limite foi atingido.");
-                if (exato.getMelhorRota() != null) {
-                    System.out.println("Melhor custo parcial encontrado: " + exato.getMelhorCusto());
-                }
-            } else {
-                System.out.println("Custo ótimo encontrado: " + exato.getMelhorCusto());
+            Resultado resultadoExato = new Resultado(
+                fileParser.getNomeInstancia(),
+                exato.getMelhorCusto(),
+                fileParser.getOptimalSolution(),
+                tempoExato,
+                exato.estourouTempo()
+            );
+
+            resultadoExato.mostrarResumo();
+
+            if (exato.getMelhorRota() != null) {
                 System.out.println("Rota: " + Arrays.toString(exato.getMelhorRota()));
             }
 
-            System.out.println("Custo ótimo esperado: " + fileParser.getOptimalSolution());
-            System.out.println("----------------------------------------");
+             System.out.println("----------------------------------------");
         }
     }
 }
